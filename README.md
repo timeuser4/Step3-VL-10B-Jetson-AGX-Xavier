@@ -2,6 +2,8 @@
 
 在 NVIDIA Jetson AGX Xavier (Volta/Sm_70) 上部署 `stepfun-ai/Step3-VL-10B` 多模态大语言模型。
 
+**GGUF 模型下载**: https://huggingface.co/sq6er4/Step3-VL-10B-Q4_K_M
+
 ## 环境
 
 | 项目 | 值 |
@@ -29,6 +31,8 @@
 ## 路线 A: Safetensors 原生部署
 
 ```bash
+
+
 # 1. 下载模型
 export HF_ENDPOINT=https://hf-mirror.com
 python3 -c "from huggingface_hub import snapshot_download; snapshot_download('stepfun-ai/Step3-VL-10B')"
@@ -58,24 +62,17 @@ cd ~/llama.cpp/build
 cmake .. -DGGML_CUDA=ON -DCMAKE_BUILD_TYPE=Release
 make -j$(nproc)
 
-# 2. 下载文本模型
+# 2. 下载模型 (文本 + 视觉投影)
 mkdir -p ~/models/step3-vl-gguf
 wget -c -O ~/models/step3-vl-gguf/Step3-VL-10B-Q4_K_M.gguf \
-    "https://hf-mirror.com/seanbailey518/Step3-VL-10B-GGUF/resolve/main/Step3-VL-10B-Q4_K_M.gguf"
-
-# 3. 转换 mmproj (必须自己转，预构建的不兼容)
-export HF_ENDPOINT=https://hf-mirror.com
-python3 -c "from huggingface_hub import snapshot_download; snapshot_download('stepfun-ai/Step3-VL-10B', local_dir='~/models/step3-vl-10b-vision')"
-cd ~/llama.cpp
-python3 convert_hf_to_gguf.py --mmproj --outtype f16 \
-    --outfile ~/models/step3-vl-gguf/step3-vl-mmproj.gguf \
-    ~/models/step3-vl-10b-vision/
-rm -rf ~/models/step3-vl-10b-vision/  # 清理
+    "https://huggingface.co/sq6er4/Step3-VL-10B-Q4_K_M/resolve/main/Step3-VL-10B-Q4_K_M.gguf"
+wget -c -O ~/models/step3-vl-gguf/mmproj-Step3-VL-10B-f16.gguf \
+    "https://huggingface.co/sq6er4/Step3-VL-10B-Q4_K_M/resolve/main/mmproj-Step3-VL-10B-f16.gguf"
 
 # 4. 启动服务器
 ~/llama.cpp/build/bin/llama-server \
     -m ~/models/step3-vl-gguf/Step3-VL-10B-Q4_K_M.gguf \
-    --mmproj ~/models/step3-vl-gguf/step3-vl-mmproj.gguf \
+    --mmproj ~/models/step3-vl-gguf/mmproj-Step3-VL-10B-f16.gguf \
     --host 0.0.0.0 --port 8080 -ngl 99 -t 4
 
 # 5. 测试推理
