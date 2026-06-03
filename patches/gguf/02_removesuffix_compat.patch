@@ -1,0 +1,12 @@
+--- a/conversion/step3.py
++++ b/conversion/step3.py
+@@ -82,7 +82,7 @@
+         if name.startswith("vision_model."):
+             if name == "vision_model.positional_embedding":
+                 name += ".weight"
+-            elif name.endswith(".gamma") and ".ls_" in name:
+-                name = name.removesuffix(".gamma") + ".weight"
++            elif name.endswith(".gamma") and ".ls_" in name:
++                name = name[:-len(".gamma")] + ".weight" if name.endswith(".gamma") else name
+
+             name = name.replace("attn.in_proj_weight", "attn.in_proj.weight")

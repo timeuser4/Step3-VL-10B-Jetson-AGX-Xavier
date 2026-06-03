@@ -1,0 +1,34 @@
+==================================================
+Step3-VL-10B Jetson 环境信息
+==================================================
+Python: 3.8.10 (default, Mar 18 2025, 20:04:55)
+[GCC 9.4.0]
+Platform: Linux-5.10.216-tegra-aarch64-with-glibc2.29
+Machine: aarch64
+
+PyTorch: 2.1.0a0+41361538.nv23.06
+CUDA available: True
+CUDA version: 11.4
+GPU: Xavier
+GPU memory: 30.3 GB
+GPU SM count: 8
+
+Transformers: 4.46.3
+
+--- System ---
+NAME="Ubuntu"
+VERSION="20.04.6 LTS (Focal Fossa)"
+ID=ubuntu
+
+--- Kernel ---
+Linux ubuntu 5.10.216-tegra #1 SMP PREEMPT Tue Mar 4 01:35:16 PST 2025 aarch64 aarch64 aarch64 GNU/Linux
+
+--- CPU ---
+model name	: ARMv8 Processor rev 0 (v8l)
+
+--- Memory ---
+              total        used        free      shared  buff/cache   available
+Mem:           30Gi       5.0Gi        15Gi       283Mi        10Gi        24Gi
+
+--- Disk ---
+/dev/nvme0n1p1  116G   55G   57G  50%

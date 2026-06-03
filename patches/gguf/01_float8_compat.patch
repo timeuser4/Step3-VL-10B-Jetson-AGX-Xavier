@@ -1,0 +1,12 @@
+--- a/conversion/base.py
++++ b/conversion/base.py
+@@ -1,5 +1,11 @@
+ import torch
+
++# float8 compatibility shim for PyTorch < 2.1
++# Jetson Xavier with JetPack 5.x ships PyTorch 2.1.0a0 which lacks float8 types
++if not hasattr(torch, "float8_e4m3fn"):
++    torch.float8_e4m3fn = torch.uint8  # type: ignore
++if not hasattr(torch, "float8_e5m2"):
++    torch.float8_e5m2 = torch.uint8  # type: ignore
++
